@@ -5,12 +5,14 @@ import Button from "src/components/util/Button";
 import css from "src/helpers/css";
 import { entryModeAtom } from "./entry_atoms";
 import { useState } from "react";
+import { loggedInAtom } from "src/helpers/atoms";
 
 
 const style = getStyle();
 
 export default () => {
     const setEntryMode = useSetAtom(entryModeAtom);
+    const setLocalStorage = useSetAtom(loggedInAtom);
     
     const [email, setEmail] = useState('');
     const [passoword, setPassoword] = useState('');
@@ -20,7 +22,7 @@ export default () => {
     }
 
     function handleLogin() {
-        // login
+        setLocalStorage(true);
     }
 
     return (

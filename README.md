@@ -9,7 +9,10 @@ anonymous discussions for college students
  - font-awesome (icons)
  - nodejs (backend)
  - mongodb (database)
+ - socket.io (glue)
 
 ## Todo:
- - ~~login/signup ui~~
- - home ui
+ - [x] login/signup ui
+ - [ ] home ui
+    - [x] navbar
+    - [ ] profile view left pane 

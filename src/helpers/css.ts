@@ -31,5 +31,21 @@ export default {
             borderStyle: "solid",
             borderColor: color
         }) as Style,
+
+        absCenter: {
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+        } as Style,
+
+        absBottom: {
+            position: "absolute",
+            top: "100%",
+        } as Style,
+
+        absRight: {
+            position: "absolute",
+            left: "100%",
+        } as Style,
     },
 };

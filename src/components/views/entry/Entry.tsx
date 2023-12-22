@@ -23,7 +23,7 @@ export default () => {
     }
 
     return (
-        <View>
+        <View style={style.container}>
             <View style={style.branding}>
                 <Image
                     source={require("../../../../assets/logo.png")}
@@ -46,6 +46,11 @@ export default () => {
 
 function getStyle() {
     return StyleSheet.create({
+        container: {
+            display: "flex",
+            justifyContent: "center",
+            height: "100%"
+        },
         branding: {
             ...css.mixins.flexCenter,
             flexDirection: "column",
