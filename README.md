@@ -11,4 +11,5 @@ anonymous discussions for college students
  - mongodb (database)
 
 ## Todo:
- - login/signup
+ - ~~login/signup ui~~
+ - home ui
