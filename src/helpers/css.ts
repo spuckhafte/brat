@@ -4,7 +4,8 @@ type Style = ViewStyle | TextStyle | ImageStyle;
 
 export default {
     colors: {
-        primary: "#0F0F0F",
+        otherBlack: "#0f0f0f",
+        primary: "black",
         lightPrimary: "#232D3F",
         secondary: "#005B41",
         lightSecondary: "#008170",

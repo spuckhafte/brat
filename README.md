@@ -15,4 +15,5 @@ anonymous discussions for college students
  - [x] login/signup ui
  - [ ] home ui
     - [x] navbar
-    - [ ] profile view left pane 
+    - [x] profile view left pane
+    - [ ] college view right pane  

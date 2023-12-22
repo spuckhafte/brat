@@ -75,7 +75,7 @@ function getStyle() {
             gap: 5,
         },
         input: {
-            backgroundColor: "black",
+            backgroundColor: css.colors.otherBlack,
             height: 50,
             borderRadius: 10,
             color: "white",

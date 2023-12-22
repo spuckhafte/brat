@@ -9,3 +9,5 @@ const loggedInAtomAsync = atomWithStorage(
 );
 
 export const loggedInAtom = unwrap(loggedInAtomAsync, prev => prev ?? null);
+export const profilePaneStatusAtom = atom<"show"|"hide"|"start-hiding">("hide");
+export const profilePaneTransformAtom = atom(-90);

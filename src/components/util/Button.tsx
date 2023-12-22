@@ -1,4 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity } from "react-native"
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import css from "src/helpers/css"
 
 const style = StyleSheet.create({
@@ -12,14 +13,17 @@ const style = StyleSheet.create({
     }
 });
 
-export default ({ text, onPressOut, borderRadius }: { 
-    text: string,
+export default ({ text, onPressOut, styling, textStyle }: { 
+    text: string | JSX.Element,
     onPressOut?: (() => void),
-    borderRadius?: number
+    styling?: ViewStyle,
+    textStyle?: TextStyle,
 }) => {
+    styling = styling ? styling : {};
+    textStyle = textStyle ? textStyle : {};
     return (
-        <TouchableOpacity style={style.btn} onPressOut={onPressOut}>
-            <Text style={style.btnText}>{text}</Text>
+        <TouchableOpacity style={{...style.btn, ...styling}} onPressOut={onPressOut}>
+            <Text style={{ ...style.btnText, ...textStyle }}>{text}</Text>
         </TouchableOpacity>
     )
 }
