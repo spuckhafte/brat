@@ -1,4 +1,4 @@
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native"
 import Button from "src/components/util/Button";
@@ -19,8 +19,8 @@ export default (props: {
     likes: number,
 }) => {
     const setLoggedIn = useSetAtom(loggedInAtom);
-    const [paneLeftTransform, setPaneLeftTransform] = useState(EXTREME_LEFT);
     const [profilePaneStatus, setProfilePaneStatus] = useAtom(profilePaneStatusAtom);
+    const [paneLeftTransform, setPaneLeftTransform] = useState(EXTREME_LEFT);
 
     function paneAnimation(dir: ">>" | "<<") {
         setPaneLeftTransform(previous => {
@@ -72,11 +72,11 @@ export default (props: {
             <View style={style.info}>
                 <View style={style.infoType}>
                     <Text style={style.value}>{props.posts}</Text>
-                    <Text style={style.valueDesc}> posts</Text>
+                    <Text style={style.valueDesc}>posts</Text>
                 </View>
                 <View style={style.infoType}>
                     <Text style={style.value}>{props.likes}</Text>
-                    <Text style={style.valueDesc}> likes</Text>
+                    <Text style={style.valueDesc}>likes</Text>
                 </View>
             </View>
             <View style={style.btnGrp}>
@@ -109,14 +109,8 @@ function getStyle() {
             position: "absolute",
             width: "80%",
             height: "100%",
-            borderStyle: "solid",
+            
             borderTopRightRadius: 25,
-
-            borderTopWidth: 1,
-            borderRightWidth: 1,
-
-            borderTopColor: css.colors.lightPrimary,
-            borderRightColor: css.colors.lightPrimary,
 
             shadowColor: "white",
             shadowOpacity: 0.8,
@@ -166,13 +160,13 @@ function getStyle() {
             flexDirection: "row",
             justifyContent: "center",
             alignItems: "center",
-            gap: 5,
+            // gap: 5,
         },
         value: {
             color: "white",
             fontSize: 20,
             fontWeight: "bold",
-            textAlign: "right",
+            textAlign: "center",
             width: "100%",
         },
         valueDesc: {

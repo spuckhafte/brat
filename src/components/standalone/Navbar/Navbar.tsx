@@ -1,23 +1,36 @@
 import { faBell, faUser } from "@fortawesome/free-regular-svg-icons";
 import { faBuilding, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import { StyleSheet, TouchableOpacity } from "react-native"
 import { View } from "react-native"
-import { profilePaneStatusAtom } from "src/helpers/atoms";
+import { collegePaneStatusAtom, profilePaneStatusAtom } from "src/helpers/atoms";
 import css from "src/helpers/css";
 
 const style = getStyle();
 
-
 export default () => {
     const [profilePaneStatus, setProfilePaneStatus] = useAtom(profilePaneStatusAtom);
+    const [collegePaneStatus, setCollegePaneStatus] = useAtom(collegePaneStatusAtom);
 
     function handleProfilePress() {
-        if (profilePaneStatus == "start-hiding") 
+        if (profilePaneStatus == "start-hiding")
             return;
-            
-        setProfilePaneStatus(profilePaneStatus == "show" ? "start-hiding" : "show")
+
+        if (collegePaneStatus == "show")
+            setCollegePaneStatus("start-hiding");
+
+        setProfilePaneStatus(profilePaneStatus == "show" ? "start-hiding" : "show");
+    }
+
+    function handleCollegePress() {
+        if (collegePaneStatus == "start-hiding")
+            return;
+
+        if (profilePaneStatus == "show")
+            setProfilePaneStatus("start-hiding");
+
+        setCollegePaneStatus(collegePaneStatus == "show" ? "start-hiding" : "show");
     }
 
     return (
@@ -43,7 +56,7 @@ export default () => {
                 <FontAwesomeIcon icon={faBell} color="white" size={22} />
             </TouchableOpacity>
 
-            <TouchableOpacity style={style.navIconsOutLine}>
+            <TouchableOpacity style={style.navIconsOutLine} onPress={handleCollegePress}>
                 <FontAwesomeIcon icon={faBuilding} color="white" size={22} />
             </TouchableOpacity>
 
@@ -75,8 +88,8 @@ function getStyle() {
         navIconsOutLine: {
             // ...css.mixins.test(),
             paddingHorizontal: 15,
-            height: "100%", 
-            
+            height: "100%",
+
             ...css.mixins.flexCenter
         },
     })
