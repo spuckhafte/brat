@@ -13,7 +13,7 @@ const style = getStyle();
 export default () => {
     const setEntryMode = useSetAtom(entryModeAtom);
     const setLocalStorage = useSetAtom(loggedInAtom);
-    
+
     const [email, setEmail] = useState('');
     const [passoword, setPassoword] = useState('');
 
@@ -46,7 +46,14 @@ export default () => {
                 />
             </View>
 
-            <Button text="LOGIN" onPressOut={handleLogin} />
+            <Button
+                text="LOGIN"
+                onPressOut={handleLogin}
+                textStyle={{
+                    fontSize: 16.5,
+                    fontWeight: "700",
+                }}
+            />
 
             <View style={style.changeMode}>
                 <Text style={style.changeModeText}>Don't have an account?</Text>

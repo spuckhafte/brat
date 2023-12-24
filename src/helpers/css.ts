@@ -4,11 +4,12 @@ type Style = ViewStyle | TextStyle | ImageStyle;
 
 export default {
     colors: {
-        otherBlack: "#0f0f0f",
+        otherBlack: "#161616cc",
         primary: "black",
         lightPrimary: "#232D3F",
         secondary: "#005B41",
         lightSecondary: "#008170",
+        dullWhite: "rgba(255, 255, 255, 0.6)",
     },
 
     mixins: {

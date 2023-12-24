@@ -5,6 +5,7 @@ import CollegePane from "src/components/standalone/CollegePane/CollegePane";
 import Navbar from "src/components/standalone/Navbar/Navbar";
 import ProfilePane from "src/components/standalone/ProfilePane/ProfilePane";
 import { collegePaneStatusAtom, profilePaneStatusAtom } from "src/helpers/atoms";
+import Main from "./Main/Main";
 
 const style = getStyle();
 
@@ -34,8 +35,11 @@ export default () => {
 
     return (
         <View style={style.container}>
+            <Main/>
+            
             { profilePaneStatus != "hide" && ProfilePaneElement }
             { collegePaneStatus != "hide" && CollegePaneElement }
+
             <Navbar />
         </View>
     )

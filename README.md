@@ -13,8 +13,10 @@ anonymous discussions for college students
 
 ## Todo:
  - [x] login/signup ui
- - [ ] home ui
+ - [x] home ui
     - [x] navbar
     - [x] profile view left pane
     - [x] college view right pane  
-    - [ ] main discussion view
+    - [x] main discussion view
+ - [ ] backend
+    - [ ] user validation system (login/signup)

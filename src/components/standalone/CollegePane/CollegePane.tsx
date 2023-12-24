@@ -56,16 +56,18 @@ export default (props: {
                 source={props.img}
                 style={style.img}
             />
-            <Text style={style.name}>{props.clgName}</Text>
-            <Text style={style.clgId}>{props.clgId}</Text>
-            <View style={style.info}>
-                <View style={style.infoType}>
-                    <Text style={style.value}>{props.online}</Text>
-                    <Text style={style.valueDesc}>online</Text>
-                </View>
-                <View style={style.infoType}>
-                    <Text style={style.value}>{props.members}</Text>
-                    <Text style={style.valueDesc}>total</Text>
+            <View style={style.data}>
+                <Text style={style.name}>{props.clgName}</Text>
+                <Text style={style.clgId}>{props.clgId}</Text>
+                <View style={style.info}>
+                    <View style={style.infoType}>
+                        <Text style={style.value}>{props.online}</Text>
+                        <Text style={style.valueDesc}>online</Text>
+                    </View>
+                    <View style={style.infoType}>
+                        <Text style={style.value}>{props.members}</Text>
+                        <Text style={style.valueDesc}>total</Text>
+                    </View>
                 </View>
             </View>
         </Animated.View>
@@ -95,6 +97,8 @@ function getStyle() {
             alignItems: "center",
 
             paddingVertical: 20,
+            paddingHorizontal: 10,
+            marginTop: 10,
         },
 
         img: {
@@ -105,22 +109,29 @@ function getStyle() {
             borderWidth: 3,
             marginBottom: 25,
         },
+        data: {
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: css.colors.otherBlack,
+            paddingVertical: 25,
+            borderRadius: 30,
+            paddingHorizontal: 20,
+        },
         name: {
             color: "white",
-            fontSize: 22,
+            fontSize: 16,
             fontWeight: "bold",
             textTransform: "uppercase",
         },
 
         clgId: {
             color: css.colors.lightSecondary,
-            fontSize: 22,
+            fontSize: 18,
             fontWeight: "600",
             marginBottom: 25,
         },
 
         info: {
-            marginBottom: 25,
             gap: 2.5,
         },
         infoType: {
@@ -132,14 +143,14 @@ function getStyle() {
         },
         value: {
             color: "white",
-            fontSize: 20,
+            fontSize: 16,
             fontWeight: "bold",
             textAlign: "center",
             width: "100%",
         },
         valueDesc: {
             color: css.colors.lightSecondary,
-            fontSize: 18,
+            fontSize: 15,
             fontWeight: "bold",
             textAlign: "left",
             width: "100%",

@@ -62,37 +62,34 @@ export default (props: {
                 source={props.pfp}
                 style={style.pfp}
             />
-            <Text style={style.name}>{props.username}</Text>
-            <Text style={style.clg}>{props.clg}</Text>
-            <View style={style.info}>
-                <View style={style.infoType}>
-                    <Text style={style.value}>{props.posts}</Text>
-                    <Text style={style.valueDesc}>posts</Text>
-                </View>
-                <View style={style.infoType}>
-                    <Text style={style.value}>{props.likes}</Text>
-                    <Text style={style.valueDesc}>likes</Text>
+            <View style={style.data}>
+                <Text style={style.name}>{props.username}</Text>
+                <Text style={style.clg}>{props.clg}</Text>
+                <View style={style.info}>
+                    <View style={style.infoType}>
+                        <Text style={style.value}>{props.posts}</Text>
+                        <Text style={style.valueDesc}>posts</Text>
+                    </View>
+                    <View style={style.infoType}>
+                        <Text style={style.value}>{props.likes}</Text>
+                        <Text style={style.valueDesc}>likes</Text>
+                    </View>
                 </View>
             </View>
             <View style={style.btnGrp}>
                 <Button
                     text="Edit Profile"
-                    styling={{ height: 35 }}
-                    textStyle={{
-                        fontSize: 15,
-                        textTransform: "uppercase"
-                    }}
+                    styling={style.btnStyle}
+                    textStyle={style.btnTextStyle}
                 />
                 <Button
                     text="Logout"
-                    styling={{ height: 35 }}
-                    textStyle={{
-                        fontSize: 15,
-                        textTransform: "uppercase"
-                    }}
+                    styling={style.btnStyle}
+                    textStyle={style.btnTextStyle}
                     onPressOut={handleLogout}
                 />
             </View>
+
         </Animated.View>
     )
 }
@@ -120,6 +117,7 @@ function getStyle() {
             alignItems: "center",
 
             paddingVertical: 20,
+            marginTop: 10,
         },
 
         pfp: {
@@ -130,23 +128,34 @@ function getStyle() {
             borderWidth: 2,
             marginBottom: 25,
         },
+
+        data: {
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: css.colors.otherBlack,
+            paddingVertical: 20,
+            borderRadius: 20,
+            width: 250,
+
+            marginBottom: 15,
+        },
+
         name: {
             color: "white",
-            fontSize: 25,
+            fontSize: 20,
             fontWeight: "bold",
             marginBottom: 5,
         },
 
         clg: {
             color: css.colors.lightSecondary,
-            fontSize: 18,
+            fontSize: 15,
             fontWeight: "600",
             textTransform: "uppercase",
             marginBottom: 25,
         },
 
         info: {
-            marginBottom: 25,
             gap: 2.5,
         },
         infoType: {
@@ -155,28 +164,37 @@ function getStyle() {
             flexDirection: "row",
             justifyContent: "center",
             alignItems: "center",
-            // gap: 5,
         },
         value: {
             color: "white",
-            fontSize: 20,
+            fontSize: 16,
             fontWeight: "bold",
             textAlign: "center",
             width: "100%",
         },
         valueDesc: {
             color: css.colors.lightSecondary,
-            fontSize: 18,
+            fontSize: 15,
             fontWeight: "bold",
             textAlign: "left",
             width: "100%",
             textTransform: "uppercase",
         },
         btnGrp: {
-            width: "100%",
+            paddingVertical: 20,
             paddingHorizontal: 50,
-            paddingVertical: 10,
             gap: 5,
+            backgroundColor: css.colors.otherBlack,
+            borderRadius: 18,
+        },
+        btnStyle: {
+            height: 35,
+            width: 150,
+        },
+        btnTextStyle: {
+            fontSize: 13,
+            textTransform: "uppercase",
+            fontWeight: "700"
         }
     });
 }

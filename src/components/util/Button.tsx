@@ -5,24 +5,32 @@ const style = StyleSheet.create({
     btn: {
         ...css.mixins.btnDark,
     },
-    btnText: {
-        color: "white",
-        fontSize: 16.5,
-        fontWeight: "700",
-    }
+    btnText: { color: "white" }
 });
 
-export default ({ text, onPressOut, styling, textStyle }: { 
+export default ({ text, onPressOut, styling, textStyle, noText, id }: {
     text: string | JSX.Element,
     onPressOut?: (() => void),
     styling?: ViewStyle,
     textStyle?: TextStyle,
+    noText?: boolean,
+    id?: string
 }) => {
     styling = styling ? styling : {};
     textStyle = textStyle ? textStyle : {};
     return (
-        <TouchableOpacity style={{...style.btn, ...styling}} onPressOut={onPressOut}>
-            <Text style={{ ...style.btnText, ...textStyle }}>{text}</Text>
+        <TouchableOpacity style={{ ...style.btn, ...styling }} onPressOut={onPressOut} testID={id}>
+            {
+                noText
+                    ? text
+                    : <Text
+                        style={{
+                            ...style.btnText,
+                            ...textStyle
+                        }}>
+                        {text}
+                    </Text>
+            }
         </TouchableOpacity>
     )
 }
