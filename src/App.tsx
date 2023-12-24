@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Entry from "./components/views/entry/Entry";
 import cssVar from "./helpers/css";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtomValue } from "jotai";
 import { loggedInAtom } from "./helpers/atoms";
 import Home from "./components/views/Home/Home";
 

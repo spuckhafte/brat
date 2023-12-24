@@ -1,15 +1,15 @@
-import { useAtom, useSetAtom } from "jotai";
-import { useEffect, useState } from "react";
+import { useAtomValue, useSetAtom } from "jotai";
+import { useEffect, useRef } from "react";
 import { Image, StyleSheet, Text, View } from "react-native"
 import Button from "src/components/util/Button";
-import { loggedInAtom, profilePaneStatusAtom, profilePaneTransformAtom } from "src/helpers/atoms";
+import { btnForProfilePaneClickedAtom, loggedInAtom, profilePaneStatusAtom } from "src/helpers/atoms";
+import Animated, { runOnJS, useSharedValue, withSpring } from "react-native-reanimated";
 import css from "src/helpers/css";
 
 const style = getStyle();
 
-const EXTREME_LEFT = -80;
+const EXTREME_LEFT = -304;
 const EXTREME_RIGHT = 0;
-const SPEED = 10;
 
 export default (props: {
     pfp: any,
@@ -19,47 +19,42 @@ export default (props: {
     likes: number,
 }) => {
     const setLoggedIn = useSetAtom(loggedInAtom);
-    const [profilePaneStatus, setProfilePaneStatus] = useAtom(profilePaneStatusAtom);
-    const [paneLeftTransform, setPaneLeftTransform] = useState(EXTREME_LEFT);
+    const setProfilePaneStatus = useSetAtom(profilePaneStatusAtom);
+    const btnForProfilePaneClicked = useAtomValue(btnForProfilePaneClickedAtom);
+    const paneXTransform = useRef(useSharedValue(EXTREME_LEFT)).current;
 
-    function paneAnimation(dir: ">>" | "<<") {
-        setPaneLeftTransform(previous => {
-            if (
-                (dir == ">>" && previous >= EXTREME_RIGHT) || 
-                (dir == "<<" && previous <= EXTREME_LEFT)
-            ) {
-                if (dir == "<<")
-                    setProfilePaneStatus("hide");
-                return previous;
-            } else {
-                requestAnimationFrame(() => paneAnimation(dir));
-                return previous + (dir == ">>" ? SPEED : -SPEED);
-            }
-        });
+    function paneAnimation() {
+        const dirn = paneXTransform.value == EXTREME_LEFT ? ">>" : "<<";
+
+        paneXTransform.value = withSpring(
+            dirn == ">>" ? EXTREME_RIGHT : EXTREME_LEFT,
+            {
+                duration: 300,
+                dampingRatio: 1
+            },
+            () => {
+                if (dirn == "<<")
+                    runOnJS(setProfilePaneStatus)("hide");
+                else runOnJS(setProfilePaneStatus)("show");
+            },
+        );
     }
 
     useEffect(() => {
-        if (paneLeftTransform > EXTREME_LEFT && paneLeftTransform < EXTREME_RIGHT)
-            return;
-
-        if (profilePaneStatus == "show")
-            paneAnimation(">>");
-        
-        if (profilePaneStatus == "start-hiding")
-            paneAnimation("<<");
-    }, [profilePaneStatus]);
+        paneAnimation();
+    }, [btnForProfilePaneClicked]);
 
     function handleLogout() {
         setLoggedIn(false);
         setProfilePaneStatus("hide");
-        setPaneLeftTransform(EXTREME_LEFT);
+        paneXTransform.value = EXTREME_LEFT;
     }
 
     return (
-        <View
+        <Animated.View
             style={{
                 ...style.container,
-                left: `${paneLeftTransform}%`
+                transform: [{ translateX: paneXTransform }],
             }}
             id="nav"
         >
@@ -98,7 +93,7 @@ export default (props: {
                     onPressOut={handleLogout}
                 />
             </View>
-        </View>
+        </Animated.View>
     )
 }
 
@@ -107,9 +102,9 @@ function getStyle() {
         container: {
             backgroundColor: css.colors.primary,
             position: "absolute",
-            width: "80%",
+            width: 304,
             height: "100%",
-            
+
             borderTopRightRadius: 25,
 
             shadowColor: "white",

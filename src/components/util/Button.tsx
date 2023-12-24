@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import css from "src/helpers/css"
 

@@ -1,64 +1,54 @@
-import { useAtom, useSetAtom } from "jotai";
-import { useEffect, useState } from "react";
+import { useAtomValue, useSetAtom } from "jotai";
+import { useEffect, useRef } from "react";
 import { Image, StyleSheet, Text, View } from "react-native"
-import { loggedInAtom, collegePaneStatusAtom } from "src/helpers/atoms";
+import { btnForClgPaneClickedAtom, collegePaneStatusAtom } from "src/helpers/atoms";
+import Animated, { runOnJS, useSharedValue, withSpring } from "react-native-reanimated";
 import css from "src/helpers/css";
 
 const style = getStyle();
 
-const EXTREME_RIGHT = 100;
-const EXTREME_LEFT = 20;
-const SPEED = 10;
+const EXTREME_LEFT = -304;
+const EXTREME_RIGHT = 0;
 
 export default (props: {
     img: any,
     clgName: string,
     clgId: string,
-    members: number,
     online: number,
+    members: number,
 }) => {
-    const setLoggedIn = useSetAtom(loggedInAtom);
-    const [collegePaneStatus, setcollegePaneStatus] = useAtom(collegePaneStatusAtom);
-    const [paneLeftTransform, setPaneLeftTransform] = useState(EXTREME_RIGHT);
+    const setCollegePaneStatus = useSetAtom(collegePaneStatusAtom);
+    const btnForClgPaneClicked = useAtomValue(btnForClgPaneClickedAtom);
+    const paneXTransform = useRef(useSharedValue(EXTREME_RIGHT)).current;
 
-    function paneAnimation(dir: ">>" | "<<") {
-        setPaneLeftTransform(previous => {
-            if (
-                (dir == ">>" && previous >= EXTREME_RIGHT) ||
-                (dir == "<<" && previous <= EXTREME_LEFT)
-            ) {
-                if (dir == ">>")
-                    setcollegePaneStatus("hide");
-                return previous;
-            } else {
-                requestAnimationFrame(() => paneAnimation(dir));
-                return previous + (dir == ">>" ? SPEED : -SPEED);
-            }
-        });
+    function paneAnimation() {
+        const dirn = paneXTransform.value == EXTREME_LEFT ? ">>" : "<<";
+
+        paneXTransform.value = withSpring(
+            dirn == ">>" ? EXTREME_RIGHT : EXTREME_LEFT,
+            {
+                duration: 300,
+                dampingRatio: 1
+            },
+            () => {
+                if (dirn == ">>")
+                    runOnJS(setCollegePaneStatus)("hide");
+                else runOnJS(setCollegePaneStatus)("show");
+            },
+        );
     }
 
     useEffect(() => {
-        if (paneLeftTransform > EXTREME_LEFT && paneLeftTransform < EXTREME_RIGHT)
-            return;
+        paneAnimation();
+    }, [btnForClgPaneClicked]);
 
-        if (collegePaneStatus == "show")
-            paneAnimation("<<");
-
-        if (collegePaneStatus == "start-hiding")
-            paneAnimation(">>");
-    }, [collegePaneStatus]);
-
-    function handleLogout() {
-        setLoggedIn(false);
-        setcollegePaneStatus("hide");
-        setPaneLeftTransform(EXTREME_RIGHT);
-    }
-
+    
     return (
-        <View
+        <Animated.View
             style={{
                 ...style.container,
-                left: `${paneLeftTransform}%`
+                left: "100%",
+                transform: [{ translateX: paneXTransform }],
             }}
             id="nav"
         >
@@ -78,7 +68,7 @@ export default (props: {
                     <Text style={style.valueDesc}>total</Text>
                 </View>
             </View>
-        </View>
+        </Animated.View>
     )
 }
 
@@ -87,7 +77,7 @@ function getStyle() {
         container: {
             backgroundColor: css.colors.primary,
             position: "absolute",
-            width: "80%",
+            width: 304,
             height: "100%",
 
             borderTopLeftRadius: 25,
@@ -134,13 +124,11 @@ function getStyle() {
             gap: 2.5,
         },
         infoType: {
-            // ...css.mixins.test(),
             width: 69,
             display: "flex",
             flexDirection: "row",
             justifyContent: "center",
             alignItems: "center",
-            // gap: 5,
         },
         value: {
             color: "white",

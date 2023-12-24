@@ -1,10 +1,15 @@
 import { faBell, faUser } from "@fortawesome/free-regular-svg-icons";
 import { faBuilding, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { StyleSheet, TouchableOpacity } from "react-native"
 import { View } from "react-native"
-import { collegePaneStatusAtom, profilePaneStatusAtom } from "src/helpers/atoms";
+import { 
+    btnForClgPaneClickedAtom, 
+    btnForProfilePaneClickedAtom, 
+    collegePaneStatusAtom, 
+    profilePaneStatusAtom 
+} from "src/helpers/atoms";
 import css from "src/helpers/css";
 
 const style = getStyle();
@@ -13,24 +18,45 @@ export default () => {
     const [profilePaneStatus, setProfilePaneStatus] = useAtom(profilePaneStatusAtom);
     const [collegePaneStatus, setCollegePaneStatus] = useAtom(collegePaneStatusAtom);
 
+    const setBtnForClgPaneClicked = useSetAtom(btnForClgPaneClickedAtom);
+    const setBtnForProfilePaneClicked = useSetAtom(btnForProfilePaneClickedAtom);
+
     function handleProfilePress() {
-        if (profilePaneStatus == "start-hiding")
+        if (collegePaneStatus == "start-showing")
             return;
 
-        if (collegePaneStatus == "show")
+        if (collegePaneStatus == "show") {
             setCollegePaneStatus("start-hiding");
+            setBtnForClgPaneClicked(prev => !prev);
+        }
 
-        setProfilePaneStatus(profilePaneStatus == "show" ? "start-hiding" : "show");
+        setProfilePaneStatus(prev => {
+            if (prev != "show" && prev != "hide")
+                return prev;
+
+            return prev == "hide" ? "start-showing" : "start-hiding";
+        });
+
+        setBtnForProfilePaneClicked(prev => !prev);
     }
 
     function handleCollegePress() {
-        if (collegePaneStatus == "start-hiding")
+        if (profilePaneStatus == "start-showing")
             return;
 
-        if (profilePaneStatus == "show")
+        if (profilePaneStatus == "show") {
             setProfilePaneStatus("start-hiding");
+            setBtnForProfilePaneClicked(prev => !prev);
+        }
 
-        setCollegePaneStatus(collegePaneStatus == "show" ? "start-hiding" : "show");
+        setCollegePaneStatus(prev => {
+            if (prev != "show" && prev != "hide")
+                return prev;
+
+            return prev == "show" ? "start-hiding" : "start-showing";
+        });
+
+        setBtnForClgPaneClicked(prev => !prev);
     }
 
     return (
@@ -86,7 +112,6 @@ function getStyle() {
             borderTopColor: "gray",
         },
         navIconsOutLine: {
-            // ...css.mixins.test(),
             paddingHorizontal: 15,
             height: "100%",
 

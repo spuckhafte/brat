@@ -1,4 +1,4 @@
-import { atom, useSetAtom } from "jotai";
+import { atom } from "jotai";
 import { atomWithStorage, createJSONStorage, unwrap } from "jotai/utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -10,8 +10,7 @@ const loggedInAtomAsync = atomWithStorage(
 
 export const loggedInAtom = unwrap(loggedInAtomAsync, prev => prev ?? null);
 
-export const profilePaneStatusAtom = atom<"show"|"hide"|"start-hiding">("hide");
-export const profilePaneTransformAtom = atom(-80);
-
-export const collegePaneStatusAtom = atom<"show"|"hide"|"start-hiding">("hide");
-export const collegePaneTransformAtom = atom(100);
+export const btnForClgPaneClickedAtom = atom<true|false>(false);
+export const btnForProfilePaneClickedAtom = atom<true|false>(false);
+export const profilePaneStatusAtom = atom<"show"|"hide"|"start-hiding"|"start-showing">("hide");
+export const collegePaneStatusAtom = atom<"show"|"hide"|"start-hiding"|"start-showing">("hide");
