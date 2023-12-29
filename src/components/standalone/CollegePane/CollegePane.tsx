@@ -1,23 +1,20 @@
 import { useAtomValue, useSetAtom } from "jotai";
 import { useEffect, useRef } from "react";
 import { Image, StyleSheet, Text, View } from "react-native"
-import { btnForClgPaneClickedAtom, collegePaneStatusAtom } from "src/helpers/atoms";
+import { btnForClgPaneClickedAtom, collegePaneStatusAtom, userDetailsAtom } from "src/helpers/atoms";
 import Animated, { runOnJS, useSharedValue, withSpring } from "react-native-reanimated";
 import css from "src/helpers/css";
 
 const EXTREME_LEFT = -304;
 const EXTREME_RIGHT = 0;
 
-export default (props: {
-    img: any,
-    clgName: string,
-    clgId: string,
-    online: number,
-    members: number,
-}) => {
+export default () => {
+    const userDetails = useAtomValue(userDetailsAtom);
     const setCollegePaneStatus = useSetAtom(collegePaneStatusAtom);
     const btnForClgPaneClicked = useAtomValue(btnForClgPaneClickedAtom);
     const paneXTransform = useRef(useSharedValue(EXTREME_RIGHT)).current;
+
+    const clgImg = useRef(userDetails?.clg.pfp as string).current;
 
     function paneAnimation() {
         const dirn = paneXTransform.value == EXTREME_LEFT ? ">>" : "<<";
@@ -51,19 +48,19 @@ export default (props: {
             id="nav"
         >
             <Image
-                source={props.img}
+                source={{ uri: clgImg }}
                 style={style.img}
             />
             <View style={style.data}>
-                <Text style={style.name}>{props.clgName}</Text>
-                <Text style={style.clgId}>{props.clgId}</Text>
+                <Text style={style.name}>{userDetails?.clg.name}</Text>
+                <Text style={style.clgId}>{userDetails?.clg.id}</Text>
                 <View style={style.info}>
                     <View style={style.infoType}>
-                        <Text style={style.value}>{props.online}</Text>
+                        <Text style={style.value}>{userDetails?.clg.onlineMembers}</Text>
                         <Text style={style.valueDesc}>online</Text>
                     </View>
                     <View style={style.infoType}>
-                        <Text style={style.value}>{props.members}</Text>
+                        <Text style={style.value}>{userDetails?.clg.totalMembers}</Text>
                         <Text style={style.valueDesc}>total</Text>
                     </View>
                 </View>

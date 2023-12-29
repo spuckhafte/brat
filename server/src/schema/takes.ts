@@ -2,7 +2,10 @@ import mongoose from "mongoose";
 
 const takesSchema = new mongoose.Schema({
     author: String,
-    clgId: String,
+    clgId: {
+        type: String,
+        index: true,
+    },
     content: {
         title: String,
         body: String,
@@ -15,7 +18,8 @@ const takesSchema = new mongoose.Schema({
     // default values
     createdAt: {
         type: String,
-        default: () => Date.now().toString()
+        default: () => Date.now().toString(),
+        index: true,
     },
 });
 

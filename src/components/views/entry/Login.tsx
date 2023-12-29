@@ -5,24 +5,67 @@ import Button from "src/components/util/Button";
 import css from "src/helpers/css";
 import { entryModeAtom } from "./entry_atoms";
 import { useState } from "react";
-import { loggedInAtom } from "src/helpers/atoms";
-
+import { loggedInAtom, modalValueAtom, modalVisibleAtom, takesAtom, userDetailsAtom } from "src/helpers/atoms";
+import { socket } from "src/helpers/socket";
+import useSocket from "src/helpers/hooks/useSocket";
+import { DataOnEntry } from "server/types";
+import EmailValidator from "email-validator";
+import passwordValidtor from "src/helpers/passwordValidator";
 
 export default () => {
     const setEntryMode = useSetAtom(entryModeAtom);
-    const setLocalStorage = useSetAtom(loggedInAtom);
+    const setLoggedIn = useSetAtom(loggedInAtom);
+    const setModalValue = useSetAtom(modalValueAtom);
+    const setModalVisible = useSetAtom(modalVisibleAtom);
+    const setUserDetails = useSetAtom(userDetailsAtom);
+    const setTakes = useSetAtom(takesAtom);
 
     const [email, setEmail] = useState('');
-    const [passoword, setPassoword] = useState('');
+    const [password, setPassword] = useState('');
 
     function handleModeChangeToSignUp() {
         setEntryMode("signup");
     }
 
     function handleLogin() {
-        setLocalStorage(true);
-        setEntryMode(null);
+        if (
+            !EmailValidator.validate(email) ||
+            !passwordValidtor.validate(password)
+        ) {
+            setModalValue({
+                title: "Login Failed",
+                body: "Invalid credentials",
+            });
+            setModalVisible(true);
+            return;
+        }
+
+        socket.emit("login", {
+            mail: email,
+            password,
+        });
     }
+
+    useSocket({
+        mainEvent: "login",
+
+        onErr: (err: string) => {
+            setModalValue({
+                title: "Login Failed",
+                body: err,
+            });
+            setModalVisible(true);
+        },
+        onDone: (data: DataOnEntry) => {
+            setUserDetails({
+                user: data.user,
+                clg: data.clg,
+                sessionId: data.sessionId
+            });
+            setTakes(data.takes);
+            setLoggedIn(true);
+        }
+    });
 
     return (
         <View style={style.container}>
@@ -39,8 +82,8 @@ export default () => {
                     secureTextEntry={true}
                     placeholder="Password"
                     placeholderTextColor={"gray"}
-                    value={passoword}
-                    onChangeText={setPassoword}
+                    value={password}
+                    onChangeText={setPassword}
                 />
             </View>
 

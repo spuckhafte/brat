@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const clgsSchema = new mongoose.Schema({
-    id: String,
+    clgId: String,
     name: String,
     img: String,
     members: Number,

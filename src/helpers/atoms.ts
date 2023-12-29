@@ -21,8 +21,7 @@ type ModalContent = {
     onModalClose?: CallableFunction,
 }
 
-export const loggedInAtom = storageAtom("loggedIn", false);
-
+export const loggedInAtom = atom(false);
 export const modalVisibleAtom = atom(false);
 export const modalValueAtom = atom<ModalContent>({ title: "", body: "" });
 

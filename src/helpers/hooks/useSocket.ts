@@ -7,38 +7,39 @@ type StandardSocket = {
     onErr: CallableFunction,
     onDone: CallableFunction,
 
-    otherEvents: {
+    otherEvents?: {
         [index: `on${string}`]: CallableFunction
     };
 }
 
 export default (board: StandardSocket) => {
     useEffect(() => {
-        let eventToCbMap: {
+        let mapEventsToCb: {
             [index: string]: CallableFunction
         };
 
-        eventToCbMap = {
+        mapEventsToCb = {
             [board.mainEvent + "Err"]: board.onErr,
             [board.mainEvent + "Done"]: board.onDone,
         };
 
-        Object.keys(board.otherEvents).forEach(event => {
-            eventToCbMap[board.mainEvent + event.split("on")[1]] =
-                board.otherEvents[event];
-        });
+        if (board.otherEvents)
+            for (let event of Object.keys(board.otherEvents))
+                mapEventsToCb[
+                    board.mainEvent + event.split("on")[1]
+                ] = board.otherEvents[event];
 
-        for (let event of Object.keys(eventToCbMap))
+        for (let event of Object.keys(mapEventsToCb))
             socket.on(
-                event, 
-                eventToCbMap[event] as (...args: any[]) => void
+                event,
+                mapEventsToCb[event] as (...args: any[]) => void
             );
-        
+
         return () => {
-            for (let event of Object.keys(eventToCbMap))
+            for (let event of Object.keys(mapEventsToCb))
                 socket.off(
-                    event, 
-                    eventToCbMap[event] as (...args: any[]) => void
+                    event,
+                    mapEventsToCb[event] as (...args: any[]) => void
                 );
         }
     }, []);

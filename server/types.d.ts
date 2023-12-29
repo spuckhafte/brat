@@ -4,6 +4,11 @@ export type UserForSignup = {
     password: string,
 }
 
+export type UserForLogin = {
+    mail: string,
+    password: string,
+}
+
 export type ATake = {
     _id: string,
     
@@ -31,6 +36,7 @@ export type DataOnEntry = {
         name: string,
         id: string,
         totalMembers: number,
+        onlineMembers: number,
         pfp: string,
     },
     sessionId: string,

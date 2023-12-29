@@ -2,24 +2,23 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { useEffect, useRef } from "react";
 import { Image, StyleSheet, Text, View } from "react-native"
 import Button from "src/components/util/Button";
-import { btnForProfilePaneClickedAtom, loggedInAtom, profilePaneStatusAtom } from "src/helpers/atoms";
+import { btnForProfilePaneClickedAtom, loggedInAtom, profilePaneStatusAtom, userDetailsAtom } from "src/helpers/atoms";
 import Animated, { runOnJS, useSharedValue, withSpring } from "react-native-reanimated";
 import css from "src/helpers/css";
+import { socket } from "src/helpers/socket";
 
 const EXTREME_LEFT = -304;
 const EXTREME_RIGHT = 0;
 
-export default (props: {
-    pfp: any,
-    username: string,
-    clg: string,
-    posts: number,
-    likes: number,
-}) => {
+export default () => {
+    const userDetails = useAtomValue(userDetailsAtom);
     const setLoggedIn = useSetAtom(loggedInAtom);
     const setProfilePaneStatus = useSetAtom(profilePaneStatusAtom);
     const btnForProfilePaneClicked = useAtomValue(btnForProfilePaneClickedAtom);
     const paneXTransform = useRef(useSharedValue(EXTREME_LEFT)).current;
+    const setUserDetails = useSetAtom(userDetailsAtom);
+
+    const pfp = useRef(getUserPfp(userDetails?.user.name as string)).current;
 
     function paneAnimation() {
         const dirn = paneXTransform.value == EXTREME_LEFT ? ">>" : "<<";
@@ -43,7 +42,9 @@ export default (props: {
     }, [btnForProfilePaneClicked]);
 
     function handleLogout() {
+        socket.emit("handleLogout", userDetails?.clg.id);
         setLoggedIn(false);
+        setUserDetails(null);
         setProfilePaneStatus("hide");
         paneXTransform.value = EXTREME_LEFT;
     }
@@ -57,19 +58,19 @@ export default (props: {
             id="nav"
         >
             <Image
-                source={props.pfp}
+                source={{ uri: pfp }}
                 style={style.pfp}
             />
             <View style={style.data}>
-                <Text style={style.name}>{props.username}</Text>
-                <Text style={style.clg}>{props.clg}</Text>
+                <Text style={style.name}>{userDetails?.user.name}</Text>
+                <Text style={style.clg}>{userDetails?.clg.name}</Text>
                 <View style={style.info}>
                     <View style={style.infoType}>
-                        <Text style={style.value}>{props.posts}</Text>
+                        <Text style={style.value}>{userDetails?.user.posts}</Text>
                         <Text style={style.valueDesc}>posts</Text>
                     </View>
                     <View style={style.infoType}>
-                        <Text style={style.value}>{props.likes}</Text>
+                        <Text style={style.value}>{userDetails?.user.likes}</Text>
                         <Text style={style.valueDesc}>likes</Text>
                     </View>
                 </View>
@@ -118,7 +119,7 @@ const style = StyleSheet.create({
     },
 
     pfp: {
-        width: 180,
+        width: 180, 
         height: 180,
         borderRadius: 100,
         borderColor: css.colors.secondary,
@@ -194,3 +195,7 @@ const style = StyleSheet.create({
         fontWeight: "700"
     }
 });
+
+function getUserPfp(username: string) {
+    return `https://api.dicebear.com/7.x/adventurer-neutral/png?seed=${username}`;
+}
