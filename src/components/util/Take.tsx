@@ -5,8 +5,6 @@ import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity, View } from 
 import css from "src/helpers/css";
 import Button from "./Button";
 
-const style = getStyle();
-
 export default (props: {
     username: string,
     time: string,
@@ -107,81 +105,79 @@ export default (props: {
     )
 }
 
-function getStyle() {
-    return StyleSheet.create({
-        container: {
-            backgroundColor: css.colors.otherBlack,
-            borderRadius: 25,
-            marginHorizontal: 20,
-            paddingHorizontal: 25,
-            paddingVertical: 15,
-            gap: 10,
-            marginBottom: 15,
-        },
-        header: {
-            display: "flex",
-            flexDirection: "row",
-            gap: 10,
-            alignItems: "center",
-        },
-        name: {
-            color: css.colors.lightSecondary,
-            maxWidth: 150,
-            fontSize: 17,
-            fontWeight: "bold",
-        },
-        time: {
-            color: css.colors.dullWhite,
-            maxWidth: 80,
-            fontSize: 13,
-        },
-        content: {
+const style = StyleSheet.create({
+    container: {
+        backgroundColor: css.colors.otherBlack,
+        borderRadius: 25,
+        marginHorizontal: 20,
+        paddingHorizontal: 25,
+        paddingVertical: 15,
+        gap: 10,
+        marginBottom: 15,
+    },
+    header: {
+        display: "flex",
+        flexDirection: "row",
+        gap: 10,
+        alignItems: "center",
+    },
+    name: {
+        color: css.colors.lightSecondary,
+        maxWidth: 150,
+        fontSize: 17,
+        fontWeight: "bold",
+    },
+    time: {
+        color: css.colors.dullWhite,
+        maxWidth: 80,
+        fontSize: 13,
+    },
+    content: {
 
-        },
-        title: {
-            color: "white",
-            fontSize: 22,
-            fontWeight: "800",
-            paddingBottom: 5,
-        },
-        body: {
-            color: "white",
-            fontWeight: "400",
-            fontSize: 17
-        },
-        footer: {
-            display: "flex",
-            flexDirection: "row",
-            gap: 10,
-            paddingTop: 8,
-        },
-        like: {
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 10,
-            backgroundColor: css.colors.lightPrimary,
-            paddingVertical: 3,
-            paddingHorizontal: 12,
-            borderRadius: 20,
-        },
-        dislike: {
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 8,
-            backgroundColor: css.colors.lightPrimary,
-            paddingVertical: 3,
-            paddingHorizontal: 12,
-            borderRadius: 20,
-        },
-        likeCount: {
-            color: "white",
-            fontSize: 18,
-        },
-        dislikeCount: {
-            color: "white",
-            fontSize: 18,
-        },
-    });
-}
+    },
+    title: {
+        color: "white",
+        fontSize: 22,
+        fontWeight: "800",
+        paddingBottom: 5,
+    },
+    body: {
+        color: "white",
+        fontWeight: "400",
+        fontSize: 17
+    },
+    footer: {
+        display: "flex",
+        flexDirection: "row",
+        gap: 10,
+        paddingTop: 8,
+    },
+    like: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 10,
+        backgroundColor: css.colors.lightPrimary,
+        paddingVertical: 3,
+        paddingHorizontal: 12,
+        borderRadius: 20,
+    },
+    dislike: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 8,
+        backgroundColor: css.colors.lightPrimary,
+        paddingVertical: 3,
+        paddingHorizontal: 12,
+        borderRadius: 20,
+    },
+    likeCount: {
+        color: "white",
+        fontSize: 18,
+    },
+    dislikeCount: {
+        color: "white",
+        fontSize: 18,
+    },
+});

@@ -4,7 +4,8 @@
     "paths": {
       "src/*": ["src/*"]
     },
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "module": "ESNext"
   },
   "extends": "expo/tsconfig.base"
 }

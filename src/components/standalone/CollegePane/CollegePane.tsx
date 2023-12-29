@@ -5,8 +5,6 @@ import { btnForClgPaneClickedAtom, collegePaneStatusAtom } from "src/helpers/ato
 import Animated, { runOnJS, useSharedValue, withSpring } from "react-native-reanimated";
 import css from "src/helpers/css";
 
-const style = getStyle();
-
 const EXTREME_LEFT = -304;
 const EXTREME_RIGHT = 0;
 
@@ -42,7 +40,7 @@ export default (props: {
         paneAnimation();
     }, [btnForClgPaneClicked]);
 
-    
+
     return (
         <Animated.View
             style={{
@@ -74,87 +72,85 @@ export default (props: {
     )
 }
 
-function getStyle() {
-    return StyleSheet.create({
-        container: {
-            backgroundColor: css.colors.primary,
-            position: "absolute",
-            width: 304,
-            height: "100%",
+const style = StyleSheet.create({
+    container: {
+        backgroundColor: css.colors.primary,
+        position: "absolute",
+        width: 304,
+        height: "100%",
 
-            borderTopLeftRadius: 25,
+        borderTopLeftRadius: 25,
 
-            shadowColor: "white",
-            shadowOpacity: 0.8,
-            shadowRadius: 2,
-            shadowOffset: {
-                height: 2,
-                width: 2,
-            },
-            elevation: 10,
+        shadowColor: "white",
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        shadowOffset: {
+            height: 2,
+            width: 2,
+        },
+        elevation: 10,
 
-            display: "flex",
-            alignItems: "center",
+        display: "flex",
+        alignItems: "center",
 
-            paddingVertical: 20,
-            paddingHorizontal: 10,
-            marginTop: 10,
-        },
+        paddingVertical: 20,
+        paddingHorizontal: 10,
+        marginTop: 10,
+    },
 
-        img: {
-            width: 180,
-            height: 180,
-            borderRadius: 100,
-            borderColor: css.colors.lightPrimary,
-            borderWidth: 3,
-            marginBottom: 25,
-        },
-        data: {
-            display: "flex",
-            alignItems: "center",
-            backgroundColor: css.colors.otherBlack,
-            paddingVertical: 25,
-            borderRadius: 30,
-            paddingHorizontal: 20,
-        },
-        name: {
-            color: "white",
-            fontSize: 16,
-            fontWeight: "bold",
-            textTransform: "uppercase",
-        },
+    img: {
+        width: 180,
+        height: 180,
+        borderRadius: 100,
+        borderColor: css.colors.lightPrimary,
+        borderWidth: 3,
+        marginBottom: 25,
+    },
+    data: {
+        display: "flex",
+        alignItems: "center",
+        backgroundColor: css.colors.otherBlack,
+        paddingVertical: 25,
+        borderRadius: 30,
+        paddingHorizontal: 20,
+    },
+    name: {
+        color: "white",
+        fontSize: 16,
+        fontWeight: "bold",
+        textTransform: "uppercase",
+    },
 
-        clgId: {
-            color: css.colors.lightSecondary,
-            fontSize: 18,
-            fontWeight: "600",
-            marginBottom: 25,
-        },
+    clgId: {
+        color: css.colors.lightSecondary,
+        fontSize: 18,
+        fontWeight: "600",
+        marginBottom: 25,
+    },
 
-        info: {
-            gap: 2.5,
-        },
-        infoType: {
-            width: 69,
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-        },
-        value: {
-            color: "white",
-            fontSize: 16,
-            fontWeight: "bold",
-            textAlign: "center",
-            width: "100%",
-        },
-        valueDesc: {
-            color: css.colors.lightSecondary,
-            fontSize: 15,
-            fontWeight: "bold",
-            textAlign: "left",
-            width: "100%",
-            textTransform: "uppercase",
-        },
-    });
-}
+    info: {
+        gap: 2.5,
+    },
+    infoType: {
+        width: 69,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    value: {
+        color: "white",
+        fontSize: 16,
+        fontWeight: "bold",
+        textAlign: "center",
+        width: "100%",
+    },
+    valueDesc: {
+        color: css.colors.lightSecondary,
+        fontSize: 15,
+        fontWeight: "bold",
+        textAlign: "left",
+        width: "100%",
+        textTransform: "uppercase",
+    },
+});

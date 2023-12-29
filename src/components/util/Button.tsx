@@ -1,13 +1,6 @@
 import { StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import css from "src/helpers/css"
 
-const style = StyleSheet.create({
-    btn: {
-        ...css.mixins.btnDark,
-    },
-    btnText: { color: "white" }
-});
-
 export default ({ text, onPressOut, styling, textStyle, noText, id }: {
     text: string | JSX.Element,
     onPressOut?: (() => void),
@@ -34,3 +27,10 @@ export default ({ text, onPressOut, styling, textStyle, noText, id }: {
         </TouchableOpacity>
     )
 }
+
+const style = StyleSheet.create({
+    btn: {
+        ...css.mixins.btnDark,
+    },
+    btnText: { color: "white" }
+});

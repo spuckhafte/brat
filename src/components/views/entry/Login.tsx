@@ -8,8 +8,6 @@ import { useState } from "react";
 import { loggedInAtom } from "src/helpers/atoms";
 
 
-const style = getStyle();
-
 export default () => {
     const setEntryMode = useSetAtom(entryModeAtom);
     const setLocalStorage = useSetAtom(loggedInAtom);
@@ -66,34 +64,32 @@ export default () => {
     )
 }
 
-function getStyle() {
-    return StyleSheet.create({
-        container: {
-            gap: 5,
-            marginTop: 20,
-            marginHorizontal: 50,
-        },
-        inps: {
-            marginBottom: 10,
-            gap: 5,
-        },
-        input: {
-            backgroundColor: css.colors.otherBlack,
-            height: 50,
-            borderRadius: 10,
-            color: "white",
-            paddingHorizontal: 10,
-        },
-        changeMode: {
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-        },
-        changeModeText: {
-            color: "gray",
-        },
-        changeModeLinkText: {
-            color: css.colors.lightSecondary,
-        },
-    });
-}
+const style = StyleSheet.create({
+    container: {
+        gap: 5,
+        marginTop: 20,
+        marginHorizontal: 50,
+    },
+    inps: {
+        marginBottom: 10,
+        gap: 5,
+    },
+    input: {
+        backgroundColor: css.colors.otherBlack,
+        height: 50,
+        borderRadius: 10,
+        color: "white",
+        paddingHorizontal: 10,
+    },
+    changeMode: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+    },
+    changeModeText: {
+        color: "gray",
+    },
+    changeModeLinkText: {
+        color: css.colors.lightSecondary,
+    },
+});

@@ -4,15 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useAtom, useSetAtom } from "jotai";
 import { StyleSheet, TouchableOpacity } from "react-native"
 import { View } from "react-native"
-import { 
-    btnForClgPaneClickedAtom, 
-    btnForProfilePaneClickedAtom, 
-    collegePaneStatusAtom, 
-    profilePaneStatusAtom 
+import {
+    btnForClgPaneClickedAtom,
+    btnForProfilePaneClickedAtom,
+    collegePaneStatusAtom,
+    profilePaneStatusAtom
 } from "src/helpers/atoms";
 import css from "src/helpers/css";
 
-const style = getStyle();
 
 export default () => {
     const [profilePaneStatus, setProfilePaneStatus] = useAtom(profilePaneStatusAtom);
@@ -90,32 +89,30 @@ export default () => {
     )
 }
 
-function getStyle() {
-    return StyleSheet.create({
-        nav: {
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingVertical: 8,
-            paddingHorizontal: 10,
-            backgroundColor: css.colors.primary,
+const style = StyleSheet.create({
+    nav: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingVertical: 8,
+        paddingHorizontal: 10,
+        backgroundColor: css.colors.primary,
 
-            width: "100%",
-            ...css.mixins.absBottom,
-            transform: [{ translateY: -52 }],
+        width: "100%",
+        ...css.mixins.absBottom,
+        transform: [{ translateY: -52 }],
 
-            elevation: 999,
+        elevation: 999,
 
-            borderTopWidth: 0.5,
-            borderStyle: "solid",
-            borderTopColor: "gray",
-        },
-        navIconsOutLine: {
-            paddingHorizontal: 15,
-            height: "100%",
+        borderTopWidth: 0.5,
+        borderStyle: "solid",
+        borderTopColor: "gray",
+    },
+    navIconsOutLine: {
+        paddingHorizontal: 15,
+        height: "100%",
 
-            ...css.mixins.flexCenter
-        },
-    })
-}
+        ...css.mixins.flexCenter
+    },
+});

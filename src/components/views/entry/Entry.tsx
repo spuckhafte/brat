@@ -7,12 +7,8 @@ import { useAtom } from "jotai";
 import { entryModeAtom } from "./entry_atoms";
 import Signup from "./Signup";
 
-
-const style = getStyle();
-
 export default () => {
     const [entryMode, setEntryMode] = useAtom(entryModeAtom);
-
 
     function handleLoginPress() {
         setEntryMode("login");
@@ -38,43 +34,41 @@ export default () => {
                         <Button text="LOGIN" onPressOut={handleLoginPress} />
                         <Button text="SIGNUP" onPressOut={handleSignupPress} />
                     </View>
-                    : (entryMode == "login" ? <Login /> : <Signup />)   
+                    : (entryMode == "login" ? <Login /> : <Signup />)
             }
         </View>
     );
 }
 
-function getStyle() {
-    return StyleSheet.create({
-        container: {
-            display: "flex",
-            justifyContent: "center",
-            height: "100%"
-        },
-        branding: {
-            ...css.mixins.flexCenter,
-            flexDirection: "column",
-        },
-        brandImg: {
-            width: 130,
-            height: 160,
-            transform: [ { scaleX: -1 } ]
-        },
-        heading: {
-            fontSize: 35,
-            textTransform: "uppercase",
-            color: css.colors.secondary,
-            fontWeight: "500",
-        },
-        subhead: {
-            fontSize: 15,
-            color: "white",
-            fontWeight: "500",
-        },
-        btnGrp: {
-            gap: 10,
-            marginTop: 30,
-            marginHorizontal: 50,
-        },
-    });
-}
+const style = StyleSheet.create({
+    container: {
+        display: "flex",
+        justifyContent: "center",
+        height: "100%"
+    },
+    branding: {
+        ...css.mixins.flexCenter,
+        flexDirection: "column",
+    },
+    brandImg: {
+        width: 130,
+        height: 160,
+        transform: [{ scaleX: -1 }]
+    },
+    heading: {
+        fontSize: 35,
+        textTransform: "uppercase",
+        color: css.colors.secondary,
+        fontWeight: "500",
+    },
+    subhead: {
+        fontSize: 15,
+        color: "white",
+        fontWeight: "500",
+    },
+    btnGrp: {
+        gap: 10,
+        marginTop: 30,
+        marginHorizontal: 50,
+    },
+});

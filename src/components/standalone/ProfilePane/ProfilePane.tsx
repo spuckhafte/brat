@@ -6,8 +6,6 @@ import { btnForProfilePaneClickedAtom, loggedInAtom, profilePaneStatusAtom } fro
 import Animated, { runOnJS, useSharedValue, withSpring } from "react-native-reanimated";
 import css from "src/helpers/css";
 
-const style = getStyle();
-
 const EXTREME_LEFT = -304;
 const EXTREME_RIGHT = 0;
 
@@ -94,107 +92,105 @@ export default (props: {
     )
 }
 
-function getStyle() {
-    return StyleSheet.create({
-        container: {
-            backgroundColor: css.colors.primary,
-            position: "absolute",
-            width: 304,
-            height: "100%",
+const style = StyleSheet.create({
+    container: {
+        backgroundColor: css.colors.primary,
+        position: "absolute",
+        width: 304,
+        height: "100%",
 
-            borderTopRightRadius: 25,
+        borderTopRightRadius: 25,
 
-            shadowColor: "white",
-            shadowOpacity: 0.8,
-            shadowRadius: 2,
-            shadowOffset: {
-                height: 2,
-                width: 2,
-            },
-            elevation: 10,
+        shadowColor: "white",
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        shadowOffset: {
+            height: 2,
+            width: 2,
+        },
+        elevation: 10,
 
-            display: "flex",
-            alignItems: "center",
+        display: "flex",
+        alignItems: "center",
 
-            paddingVertical: 20,
-            marginTop: 10,
-        },
+        paddingVertical: 20,
+        marginTop: 10,
+    },
 
-        pfp: {
-            width: 180,
-            height: 180,
-            borderRadius: 100,
-            borderColor: css.colors.secondary,
-            borderWidth: 2,
-            marginBottom: 25,
-        },
+    pfp: {
+        width: 180,
+        height: 180,
+        borderRadius: 100,
+        borderColor: css.colors.secondary,
+        borderWidth: 2,
+        marginBottom: 25,
+    },
 
-        data: {
-            display: "flex",
-            alignItems: "center",
-            backgroundColor: css.colors.otherBlack,
-            paddingVertical: 20,
-            borderRadius: 20,
-            width: 250,
+    data: {
+        display: "flex",
+        alignItems: "center",
+        backgroundColor: css.colors.otherBlack,
+        paddingVertical: 20,
+        borderRadius: 20,
+        width: 250,
 
-            marginBottom: 15,
-        },
+        marginBottom: 15,
+    },
 
-        name: {
-            color: "white",
-            fontSize: 20,
-            fontWeight: "bold",
-            marginBottom: 5,
-        },
+    name: {
+        color: "white",
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 5,
+    },
 
-        clg: {
-            color: css.colors.lightSecondary,
-            fontSize: 15,
-            fontWeight: "600",
-            textTransform: "uppercase",
-            marginBottom: 25,
-        },
+    clg: {
+        color: css.colors.lightSecondary,
+        fontSize: 15,
+        fontWeight: "600",
+        textTransform: "uppercase",
+        marginBottom: 25,
+    },
 
-        info: {
-            gap: 2.5,
-        },
-        infoType: {
-            width: 70,
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-        },
-        value: {
-            color: "white",
-            fontSize: 16,
-            fontWeight: "bold",
-            textAlign: "center",
-            width: "100%",
-        },
-        valueDesc: {
-            color: css.colors.lightSecondary,
-            fontSize: 15,
-            fontWeight: "bold",
-            textAlign: "left",
-            width: "100%",
-            textTransform: "uppercase",
-        },
-        btnGrp: {
-            paddingVertical: 20,
-            paddingHorizontal: 50,
-            gap: 5,
-            backgroundColor: css.colors.otherBlack,
-            borderRadius: 18,
-        },
-        btnStyle: {
-            height: 35,
-            width: 150,
-        },
-        btnTextStyle: {
-            fontSize: 13,
-            textTransform: "uppercase",
-            fontWeight: "700"
-        }
-    });
-}
+    info: {
+        gap: 2.5,
+    },
+    infoType: {
+        width: 70,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    value: {
+        color: "white",
+        fontSize: 16,
+        fontWeight: "bold",
+        textAlign: "center",
+        width: "100%",
+    },
+    valueDesc: {
+        color: css.colors.lightSecondary,
+        fontSize: 15,
+        fontWeight: "bold",
+        textAlign: "left",
+        width: "100%",
+        textTransform: "uppercase",
+    },
+    btnGrp: {
+        paddingVertical: 20,
+        paddingHorizontal: 50,
+        gap: 5,
+        backgroundColor: css.colors.otherBlack,
+        borderRadius: 18,
+    },
+    btnStyle: {
+        height: 35,
+        width: 150,
+    },
+    btnTextStyle: {
+        fontSize: 13,
+        textTransform: "uppercase",
+        fontWeight: "700"
+    }
+});
