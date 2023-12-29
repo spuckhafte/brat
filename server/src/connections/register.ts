@@ -1,9 +1,10 @@
 import { ASocket } from "plugboard.io";
-import { UserForSignup } from "../../types";
+import { ATake, DataOnEntry, UserForSignup } from "../../types";
 import clgs from "../schema/clgs.js";
 import users from "../schema/users.js";
 import { generateOTP, sha } from "../helpers/utils.js";
 import { sendMail } from "../helpers/mailManager.js";
+import takes from "../schema/takes.js";
 
 export default class extends ASocket<[user: UserForSignup]> {
     async run() {
@@ -52,14 +53,41 @@ export default class extends ASocket<[user: UserForSignup]> {
                 session: {
                     id: sessionId,
                     lastUpdate: Date.now(),
-                }
+                },
             });
 
-            this.socket?.emit("registerDone", sessionId);
+            const initialTakes = await takes
+                .find({ clgId: clgDiscriminator })
+                .select(
+                    [
+                        "_id", "author", "content", "likes", "dislikes", 
+                        "likedBy", "dislikedBy", "createdAt", "clgId"
+                    ]
+                ).sort({ "createdAt": -1 })
+                .limit(20) as ATake[];
+            
+            college.members = (college.members ?? 0) + 1;
+
+            const omitBack: DataOnEntry = {
+                user: {
+                    name: username,
+                    posts: 0,
+                    likes: 0,
+                },
+                clg: {
+                    name: college.name as string,
+                    id: clgDiscriminator,
+                    totalMembers: college.members as number,
+                    pfp: college.img as string,
+                },
+                takes: initialTakes,
+                sessionId,
+            }
+
+            this.socket?.emit("registerDone", omitBack);
             this.socket?.join(clgDiscriminator);
 
-            college.members = (college.members ?? 0) + 1;
             college.save();
-        })
+        });
     }
 }

@@ -3,12 +3,13 @@ import { Modal, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } 
 import Button from "src/components/util/Button";
 import css from "src/helpers/css";
 import { entryModeAtom } from "./entry_atoms";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import * as EmailValidator from "email-validator";
-import { loggedInAtom, modalValueAtom, modalVisibleAtom, otpAtom, sessionIdAtom } from "src/helpers/atoms";
+import { loggedInAtom, modalValueAtom, modalVisibleAtom, otpAtom, takesAtom, userDetailsAtom } from "src/helpers/atoms";
 import passwordValidtor from "src/helpers/passwordValidator";
 import { socket } from "src/helpers/socket";
 import useSocket from "src/helpers/hooks/useSocket";
+import { DataOnEntry, UserForSignup } from "server/types";
 
 const MIN_USERNAME_LEN = 6;
 const MAX_USERNAME_LEN = 64;
@@ -23,8 +24,10 @@ export default () => {
     const setModalVisible = useSetAtom(modalVisibleAtom);
     const setModalValue = useSetAtom(modalValueAtom);
     const setOtp = useSetAtom(otpAtom);
-    const setSessionId = useSetAtom(sessionIdAtom);
+
     const setLoggedIn = useSetAtom(loggedInAtom);
+    const setUserDetails = useSetAtom(userDetailsAtom);
+    const setTakes = useSetAtom(takesAtom)
 
     function handleModeChangeToLogin() {
         setEntryMode("login");
@@ -69,12 +72,7 @@ export default () => {
             return;
         }
 
-        type UserForSignUp = {
-            username: string;
-            mail: string;
-            password: string;
-        }
-        const emitUser: UserForSignUp = {
+        const emitUser: UserForSignup = {
             username,
             mail: email,
             password,
@@ -83,59 +81,56 @@ export default () => {
         socket.emit("register", emitUser);
     }
 
-
-    useSocket(() => {
-        function onError(err: string) {
+    useSocket({
+        mainEvent: "register",
+        
+        onErr: (err: string) => {
             setModalValue({
                 title: "Signup Failed",
                 body: err,
             });
             setModalVisible(true);
-        }
+        },
 
-        function onOtp() {
-            setModalValue({
-                title: "Enter OTP",
-                body: () => {
-                    const [otp, setOtp] = useAtom(otpAtom);
-                    return <>
-                        <View>
-                            <TextInput
-                                style={style.otpModalInput}
-                                placeholder="Sent to your mail"
-                                placeholderTextColor={"gray"}
-                                value={otp}
-                                onChangeText={setOtp}
-                                keyboardType={Platform.OS == "android" ? "numeric" : "number-pad"}
-                            />
-                        </View>
-                    </>
-                },
-                onModalOkay: () => {
-                    setOtp(otp => {
-                        socket.emit("verifyOtp", otp);
-                        return "";
-                    });
-                },
+        onDone: (data: DataOnEntry) => {
+            setUserDetails({
+                user: data.user,
+                clg: data.clg,
+                sessionId: data.sessionId,
             });
-            setModalVisible(true);
-        }
-
-        function onDone(sessionId: string) {
-            console.log("done: " + sessionId);
-            setSessionId(sessionId);
+            setTakes(data.takes);
             setLoggedIn(true);
+        },
+
+        otherEvents: {
+            onOtp: () => {
+                setModalValue({
+                    title: "Enter OTP",
+                    body: () => {
+                        const [otp, setOtp] = useAtom(otpAtom);
+                        return <>
+                            <View>
+                                <TextInput
+                                    style={style.otpModalInput}
+                                    placeholder="Sent to your mail"
+                                    placeholderTextColor={"gray"}
+                                    value={otp}
+                                    onChangeText={setOtp}
+                                    keyboardType={Platform.OS == "android" ? "numeric" : "number-pad"}
+                                />
+                            </View>
+                        </>
+                    },
+                    onModalOkay: () => {
+                        setOtp(otp => {
+                            socket.emit("verifyOtp", otp);
+                            return "";
+                        });
+                    },
+                });
+                setModalVisible(true);
+            }
         }
-
-        socket.on("registerErr", onError);
-        socket.on("registerOtp", onOtp);
-        socket.on("registerDone", onDone);
-
-        return () => {
-            socket.off('registerErr', onError);
-            socket.off('registerOtp', onOtp);
-            socket.off('registerDone', onDone);
-        };
     });
 
     return (
