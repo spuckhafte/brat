@@ -5,7 +5,6 @@ anonymous discussions for college students
  - typescript (language)
  - react-native/expo (frontend)
  - jotai (state)
- - react-native-elements (UI)
  - font-awesome (icons)
  - nodejs (backend)
  - mongodb (database)
@@ -19,4 +18,6 @@ anonymous discussions for college students
     - [x] college view right pane  
     - [x] main discussion view
  - [ ] backend
-    - [ ] user validation system (login/signup)
+    - [x] user validation system (login/signup)
+    - [ ] handling new/existing Takes
+ - [ ] loader/skeleton view ui 
