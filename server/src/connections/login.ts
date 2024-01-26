@@ -1,9 +1,10 @@
 import { ASocket } from "plugboard.io";
 import { DataOnEntry, UserForLogin } from "../../types";
 import users from "../schema/users.js";
-import { clgIdFromMail, membersInRoom, sha } from "../helpers/utils.js";
+import { clgIdFromMail, membersInRoom, sessionInvalid, sha } from "../helpers/utils.js";
 import clgs from "../schema/clgs.js";
 import getTakes from "../helpers/getTakes.js";
+import { Server, Socket } from "socket.io";
 
 export default class extends ASocket<[userLogin: UserForLogin]> {
     async run() {
@@ -21,11 +22,38 @@ export default class extends ASocket<[userLogin: UserForLogin]> {
             return;
         }
 
-        if (user.socketId) return;
+        const sessionId = sha(mail + Date.now());
+
+        if (
+            user.socketId && 
+            !sessionInvalid(user.session?.lastUpdate ?? 0)
+        ) {
+            const Io = this.io as Server;
+            const Socket = this.socket as Socket;
+        
+            this.socket.emit("loginAwait", user.mail);
+            this.socket.on("loginContinue", endOtherActiveSession);
+
+            function endOtherActiveSession(userMail: string, status: boolean) {
+                if (!user?.socketId) return;
+                if (userMail != user.mail) return;
+
+                if (status) {
+                    const targetSocket = Io.sockets.sockets.get(user.socketId);
+                    if (targetSocket) {
+                        targetSocket.emit("force-logout");
+                        targetSocket.leave(clgIdFromMail(mail));
+                    }
+                }
+
+                Socket.off("loginContinue", endOtherActiveSession);
+            }
+            return;
+        }
 
         user.socketId = this.socket.id;
         user.session = {
-            id: sha(mail + Date.now()),
+            id: sessionId,
             lastUpdate: Date.now(),
         };
 

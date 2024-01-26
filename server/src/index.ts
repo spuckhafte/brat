@@ -12,8 +12,12 @@ const plugboard = new Plugboard("./dist/connections", {
 
 plugboard.start(
     +(process.env.PORT ?? 3000), 
-    () => console.log(`\n👂 [listening in port: ${process.env.PORT ?? 3000}]`)
+    () => console.log(`\n👂 [listening to port: ${process.env.PORT ?? 3000}]`)
 );
+
+plugboard.onConnection = ({ id }) =>{
+    console.log(id + " connected")
+};
 
 InitMailer();
 console.log("📨 [mailer is ready]");

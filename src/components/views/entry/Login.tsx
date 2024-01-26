@@ -64,6 +64,40 @@ export default () => {
             });
             setTakes(data.takes);
             setLoggedIn(true);
+        },
+
+        otherEvents: {
+            onAwait: (userMail: string) => {
+                setModalValue({
+                    title: "End Active Session",
+                    body: "A session is already active on some other device, end it?",
+                    onModalOkay: () => {
+                        socket.emit("autoLogin", userMail, true); // forced
+                        socket.emit("loginContinue", userMail, true);
+                    },
+                    onModalCloseWithoutOkay: () => {
+                        socket.emit("loginContinue", userMail, false);
+                    }
+                });
+                setModalVisible(true);
+            }
+        }
+    });
+
+    useSocket({
+        mainEvent: "autoLogin",
+
+        onErr: () => { },
+
+        onDone: (data: DataOnEntry) => {
+            console.log("here");
+            setUserDetails({
+                user: data.user,
+                clg: data.clg,
+                sessionId: data.sessionId
+            });
+            setTakes(data.takes);
+            setLoggedIn(true);
         }
     });
 

@@ -28,9 +28,10 @@ export default () => {
 
     useEffect(() => {
         if (entryMode !== null) return;
+
         if (!userDetails || !userDetails.sessionId) return;
 
-        socket.emit("autoLogin", userDetails?.sessionId);
+        socket.emit("autoLogin", userDetails.sessionId);
     }, [userDetails]);
 
     useSocket({

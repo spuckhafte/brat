@@ -9,7 +9,8 @@ type StandardSocket = {
 
     otherEvents?: {
         [index: `on${string}`]: CallableFunction
-    };
+    },
+    cleanUp?: boolean,
 }
 
 export default (board: StandardSocket) => {

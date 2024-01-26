@@ -1,6 +1,8 @@
 import { createHash } from "node:crypto";
 import { Server } from "socket.io";
 
+export const SESSION_VALID_FOR = 2 * 24 * 60 * 60 * 1000; // 2 days
+
 export function sha(string: string) {
     return createHash('sha256').update(string).digest('hex');
 }
@@ -19,4 +21,8 @@ export function clgIdFromMail(mail: string) {
 
 export async function membersInRoom(room: string, io: Server) {
     return (await io.in(room).fetchSockets()).length
+}
+
+export function sessionInvalid(lastSet: number) {
+    return Date.now() > lastSet + SESSION_VALID_FOR;
 }
