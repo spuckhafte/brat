@@ -9,17 +9,22 @@ export default ({ text, onPressOut, styling, textStyle, noText, id }: {
     noText?: boolean,
     id?: string
 }) => {
-    styling = styling ? styling : {};
-    textStyle = textStyle ? textStyle : {};
     return (
-        <TouchableOpacity style={{ ...style.btn, ...styling }} onPressOut={onPressOut} testID={id}>
+        <TouchableOpacity 
+            style={{
+                ...style.btn, 
+                ...styling ?? {} 
+            }} 
+            onPressOut={onPressOut} 
+            testID={id}
+        >
             {
                 noText
                     ? text
                     : <Text
                         style={{
                             ...style.btnText,
-                            ...textStyle
+                            ...textStyle ?? {},
                         }}>
                         {text}
                     </Text>

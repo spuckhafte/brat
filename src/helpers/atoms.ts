@@ -1,24 +1,16 @@
 import { atom } from "jotai";
 import { atomWithStorage, createJSONStorage, unwrap } from "jotai/utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { KeyboardTypeOptions, StyleProp, TextStyle } from "react-native";
 import { ATake, DataOnEntry } from "server/types";
 
 type ModalContent = {
-    title: string,
+    title?: string,
     body?: (() => JSX.Element) | string,
     noTextForBody?: boolean,
-    input?: {
-        value: string,
-        onChangeText: React.Dispatch<React.SetStateAction<string>>,
-        placeholder: string,
-        placeholderTextColor: string,
-        style: StyleProp<TextStyle>,
-        keyboardType?: KeyboardTypeOptions
-    },
     onModalOkay?: CallableFunction,
     onModalCloseWithoutOkay?: CallableFunction,
     onModalClose?: CallableFunction,
+    customFullScreen?: boolean,
 }
 
 export const loggedInAtom = atom(false);

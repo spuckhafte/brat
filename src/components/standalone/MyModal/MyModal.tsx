@@ -1,6 +1,6 @@
 import { useAtom, useSetAtom } from "jotai"
-import { useEffect, useState } from "react";
-import { GestureResponderEvent, Modal, StyleSheet, Text, View } from "react-native"
+import { useEffect, useRef, useState } from "react";
+import { GestureResponderEvent, Modal, StyleSheet, Text, View, ViewStyle } from "react-native"
 import Button from "src/components/util/Button";
 import { modalValueAtom, modalVisibleAtom } from "src/helpers/atoms"
 import css from "src/helpers/css";
@@ -11,6 +11,11 @@ export default () => {
 
     const [backdropTouched, setBackdropTouched] = useState(false);
     const [modalTouched, setModalTouched] = useState(false);
+
+    const fullScreenStyle = useRef(modalValue.customFullScreen ? {
+        width: "100%",
+        height: "100%",
+    } : {}).current as ViewStyle;
 
     function closeModal() {
         setModalVisible(false);
@@ -47,12 +52,9 @@ export default () => {
         onRequestClose={closeModal}
     >
         <View style={style.modalContainer} onTouchEnd={() => setBackdropTouched(true)}>
-            <View style={style.modal} onTouchEnd={() => setModalTouched(true)}>
-                <View style={style.modalContent}>
-                    <Text style={style.errorTitle}>{modalValue.title}</Text>
-                    {/* {
-                        modalValue.input && <TextInput {...modalValue.input} />
-                    } */}
+            <View style={{ ...style.modal, ...fullScreenStyle }} onTouchEnd={() => setModalTouched(true)}>
+                <View style={{ ...style.modalContent, ...fullScreenStyle }}>
+                    { modalValue.title && <Text style={style.errorTitle}>{modalValue.title}</Text> }
                     {
                         modalValue.body && (
                             modalValue.noTextForBody ?
@@ -67,12 +69,15 @@ export default () => {
                         )
                     }
                 </View>
-                <Button
-                    text="OK"
-                    styling={style.okBtn}
-                    textStyle={style.okBtnText}
-                    onPressOut={pressOkay}
-                />
+                { 
+                    !modalValue.customFullScreen && 
+                    <Button
+                        text="OK"
+                        styling={style.okBtn}
+                        textStyle={style.okBtnText}
+                        onPressOut={pressOkay}
+                    />
+                }
             </View>
         </View>
     </Modal>

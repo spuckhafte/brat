@@ -90,7 +90,6 @@ export default () => {
         onErr: () => { },
 
         onDone: (data: DataOnEntry) => {
-            console.log("here");
             setUserDetails({
                 user: data.user,
                 clg: data.clg,

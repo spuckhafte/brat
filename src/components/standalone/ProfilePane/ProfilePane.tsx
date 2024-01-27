@@ -6,6 +6,7 @@ import { btnForProfilePaneClickedAtom, loggedInAtom, profilePaneStatusAtom, user
 import Animated, { runOnJS, useSharedValue, withSpring } from "react-native-reanimated";
 import css from "src/helpers/css";
 import { socket } from "src/helpers/socket";
+import getUserPfp from "src/helpers/getUserPfp";
 
 const EXTREME_LEFT = -304;
 const EXTREME_RIGHT = 0;
@@ -195,7 +196,3 @@ const style = StyleSheet.create({
         fontWeight: "700"
     }
 });
-
-function getUserPfp(username: string) {
-    return `https://api.dicebear.com/7.x/adventurer-neutral/png?seed=${username}`;
-}
