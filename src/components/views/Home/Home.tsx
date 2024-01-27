@@ -14,23 +14,11 @@ export default () => {
     const collegePaneStatus = useAtomValue(collegePaneStatusAtom);
 
     const ProfilePaneElement = useMemo(() => {
-        return <ProfilePane
-            pfp={require("../../../../assets/logo.png")}
-            username="spuckhafte"
-            posts={12}
-            clg="shiv nadar university"
-            likes={500}
-        />
+        return <ProfilePane />
     }, []);
 
     const CollegePaneElement = useMemo(() => {
-        return <CollegePane
-            img={require("../../../../assets/logo.png")}
-            clgName="shiv nadar university"
-            members={213}
-            clgId="snu.edu.in"
-            online={18}
-        />
+        return <CollegePane />
     }, []);
 
     return (
