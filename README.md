@@ -23,4 +23,4 @@ Sign up with your university email and join a thriving community dedicated to yo
     - [x] user validation system (login/signup)
     - [ ] handling new/existing Takes
  - [ ] loader/skeleton view ui
- - [ ] create new take ui
+ - [x] create new take ui
