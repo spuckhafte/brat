@@ -1,4 +1,7 @@
 # Brat
+
+*...under development*
+
 anonymous discussions for college students
 
 Sign up with your university email and join a thriving community dedicated to your school. In this anonymous space, students and teachers can freely vent frustrations, share experiences, and seek advice on anything university-related, from academics to campus life. Discover the power of anonymity and connect with your peers like never before.
