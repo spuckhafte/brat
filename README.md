@@ -24,6 +24,9 @@ Sign up with your university email and join a thriving community dedicated to yo
     - [x] main discussion view
  - [ ] backend
     - [x] user validation system (login/signup)
-    - [ ] handling new/existing Takes
+    - [x] handling new/existing Takes
+    - [x] handling likes/dislikes
+    - [ ] optimise posting/interacting with takes (study new techniques)
+    - [ ] bug: OTP mails not working (service defect)
  - [ ] loader/skeleton view ui
  - [x] create new take ui
