@@ -1,12 +1,16 @@
 import { faThumbsDown, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import css from "src/helpers/css";
 import Button from "./Button";
+import { handleGlobalChange } from "src/helpers/handleGlobalChange";
+import { beautifyTime } from "src/helpers/takeParser";
 
 export default (props: {
     username: string,
+    _id: string,
+    sessionId: string,
     time: string,
     title: string,
     body: string,
@@ -14,39 +18,56 @@ export default (props: {
     dislikes: number,
     userPostLikeStatus: boolean | null,
 }) => {
-    const [isPostLiked, setIsPostLiked] = useState<boolean | null>(props.userPostLikeStatus);
-    const [likeCount, setLikeCount] = useState(props.likes);
-    const [dislikeCount, setDislikeCount] = useState(props.dislikes);
     const [expandTake, setExpandTake] = useState(false);
 
     function handleLike() {
-        if (!isPostLiked) {
-            setIsPostLiked(true);
-            setLikeCount(likeCount + 1);
+        let likeCount = props.likes;
+        let dislikeCount = props.dislikes;
 
-            if (isPostLiked === false && dislikeCount != 0)
-                setDislikeCount(dislikeCount - 1);
+        if (!props.userPostLikeStatus) {
+            likeCount += 1;
+
+            if (props.userPostLikeStatus === false && props.dislikes != 0)
+                dislikeCount -= 1;
         } else {
-            setIsPostLiked(null);
-
-            if (likeCount != 0)
-                setLikeCount(likeCount - 1);
+            if (props.likes != 0)
+                likeCount -= 1;
         }
+
+        handleGlobalChange({
+            event: "handleLike",
+            query: {
+                takeId: props._id,
+                likes: likeCount,
+                dislikes: dislikeCount,
+            },
+            sessionId: props.sessionId,
+        });
     }
 
     function handleDislike() {
-        if (isPostLiked == null || isPostLiked == true) {
-            setIsPostLiked(false);
-            setDislikeCount(dislikeCount + 1);
+        let likeCount = props.likes;
+        let dislikeCount = props.dislikes;
 
-            if (isPostLiked == true && likeCount != 0)
-                setLikeCount(likeCount - 1);
+        if (props.userPostLikeStatus == null || props.userPostLikeStatus == true) {
+            dislikeCount += 1;
+
+            if (props.userPostLikeStatus == true && likeCount != 0)
+                likeCount -= 1;
         } else {
-            setIsPostLiked(null);
-
             if (dislikeCount != 0)
-                setDislikeCount(dislikeCount - 1);
+                dislikeCount -= 1;
         }
+
+        handleGlobalChange({
+            event: "handleLike",
+            query: {
+                takeId: props._id,
+                likes: likeCount,
+                dislikes: dislikeCount,
+            },
+            sessionId: props.sessionId,
+        });
     }
 
     function handlePressOnATake() {
@@ -57,25 +78,28 @@ export default (props: {
         <View style={style.container}>
             <View style={style.header}>
                 <Text style={style.name} numberOfLines={1}>{props.username}</Text>
-                <Text style={style.time}>{props.time}</Text>
+                <Text style={style.time}>{beautifyTime(props.time) + " ago"}</Text>
             </View>
             <View style={style.content} onTouchEnd={handlePressOnATake}>
-                <Text style={style.title}>{props.title}</Text>
+                <Text 
+                    style={style.title}
+                    numberOfLines={expandTake ? undefined : 3}
+                >{props.title}</Text>
                 <Text
                     style={style.body}
-                    numberOfLines={expandTake ? undefined : 1}
+                    numberOfLines={expandTake ? undefined : 2}
                 >{props.body}</Text>
             </View>
             <View style={style.footer}>
                 <Button
                     text={<>
                         <FontAwesomeIcon icon={faThumbsUp} size={18} color="white" />
-                        <Text style={style.likeCount}>{likeCount}</Text>
+                        <Text style={style.likeCount}>{props.likes}</Text>
                     </>}
                     styling={{
                         ...style.like,
                         backgroundColor: (() => {
-                            if (isPostLiked == null || isPostLiked == false)
+                            if (props.userPostLikeStatus == null || props.userPostLikeStatus == false)
                                 return css.colors.lightPrimary;
                             else return css.colors.secondary;
                         })()
@@ -87,12 +111,12 @@ export default (props: {
                 <Button
                     text={<>
                         <FontAwesomeIcon icon={faThumbsDown} size={18} color="white" />
-                        <Text style={style.dislikeCount}>{dislikeCount}</Text>
+                        <Text style={style.dislikeCount}>{props.dislikes}</Text>
                     </>}
                     styling={{
                         ...style.dislike,
                         backgroundColor: (() => {
-                            if (isPostLiked == null || isPostLiked == true)
+                            if (props.userPostLikeStatus == null || props.userPostLikeStatus == true)
                                 return css.colors.lightPrimary;
                             else return css.colors.secondary;
                         })()

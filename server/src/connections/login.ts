@@ -1,7 +1,7 @@
 import { ASocket } from "plugboard.io";
 import { DataOnEntry, UserForLogin } from "../../types";
 import users from "../schema/users.js";
-import { clgIdFromMail, membersInRoom, sessionInvalid, sha } from "../helpers/utils.js";
+import { clgIdFromMail, forceLogout, membersInRoom, sessionInvalid, sha } from "../helpers/utils.js";
 import clgs from "../schema/clgs.js";
 import getTakes from "../helpers/getTakes.js";
 import { Server, Socket } from "socket.io";
@@ -41,7 +41,7 @@ export default class extends ASocket<[userLogin: UserForLogin]> {
                 if (status) {
                     const targetSocket = Io.sockets.sockets.get(user.socketId);
                     if (targetSocket) {
-                        targetSocket.emit("force-logout");
+                        forceLogout(targetSocket);
                         targetSocket.leave(clgIdFromMail(mail));
                     }
                 }

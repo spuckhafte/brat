@@ -2,6 +2,7 @@ import { atom } from "jotai";
 import { atomWithStorage, createJSONStorage, unwrap } from "jotai/utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ATake, DataOnEntry } from "server/types";
+import { ATakeProp } from "./takeParser";
 
 type ModalContent = {
     title?: string,
@@ -11,6 +12,12 @@ type ModalContent = {
     onModalCloseWithoutOkay?: CallableFunction,
     onModalClose?: CallableFunction,
     customFullScreen?: boolean,
+}
+
+export type FrontendData = {
+    user: DataOnEntry["user"],
+    clg: DataOnEntry["clg"],
+    sessionId: string,
 }
 
 export const loggedInAtom = atom(false);
@@ -24,12 +31,9 @@ export const collegePaneStatusAtom = atom<"show" | "hide" | "start-hiding" | "st
 
 export const otpAtom = atom("");
 
-export const userDetailsAtom = storageAtom<{
-    user: DataOnEntry["user"],
-    clg: DataOnEntry["clg"],
-    sessionId: string,
-} | null>("userDetails", null);
-export const takesAtom = atom<ATake[]>([]);
+export const userDetailsAtom = storageAtom<FrontendData | null>("userDetails", null);
+
+export const takesAtom = atom<ATakeProp[]>([]);
 
 
 // util

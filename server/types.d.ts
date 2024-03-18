@@ -26,12 +26,14 @@ export type ATake = {
     createdAt?: string,
 }
 
+export type FrontendUser = {
+    name: string,
+    posts: number,
+    likes: number,
+}
+
 export type DataOnEntry = {
-    user: {
-        name: string,
-        posts: number,
-        likes: number,
-    },
+    user: FrontendUser,
     clg: {
         name: string,
         id: string,
@@ -43,3 +45,22 @@ export type DataOnEntry = {
     
     takes: ATake[],
 }
+
+export type NewTakeToPost = {
+    author: string,
+    clgId: string,
+    content: {
+        title: string,
+        body: string,
+    },
+    likes: number,
+    dislikes: number,
+    likedBy: string[],
+    dislikedBy: string[],
+
+    createdAt: string,
+}
+
+export type Partial<T> = {
+    [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
+};

@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 
 export const SESSION_VALID_FOR = 2 * 24 * 60 * 60 * 1000; // 2 days
 
@@ -25,4 +25,8 @@ export async function membersInRoom(room: string, io: Server) {
 
 export function sessionInvalid(lastSet: number) {
     return Date.now() > lastSet + SESSION_VALID_FOR;
+}
+
+export function forceLogout(socket: Socket) {
+    socket.emit("force-logout");
 }

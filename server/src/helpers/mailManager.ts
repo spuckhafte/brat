@@ -1,29 +1,20 @@
-import nodemailer from 'nodemailer';
-import SMTPTransport from 'nodemailer/lib/smtp-transport';
+import { Resend } from "resend";
 
-let transporter: nodemailer.Transporter<SMTPTransport.SentMessageInfo>|null;
+let transporter: Resend | null;
 
 export function InitMailer() {
-    // username||mail||password
-    const [_, mail, pass] = (process.env.MAIL_INFO as string).split('||');
-
-    transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-            user: mail,
-            pass
-        }
-    });
+    const apiKey = process.env.MAIL_INFO as string;
+    transporter = new Resend(apiKey);
     return transporter;
 }
 
 export async function sendMail(mail:string, otp:string) {
-    const transport = transporter ?? InitMailer();
+    transporter = transporter ?? InitMailer();
 
-    return await transport.sendMail({
-        from: `"Brat Mails" <click.app.validate@gmail.com>`,
+    return await transporter.emails.send({
+        from: '"Brat Mails" <onboarding@resend.dev>',
         to: mail,
-        subject: "Email Verification",
-        html: `<h2>Your Brat verification code is:</h2><h1>${otp}</h1>`,
+        subject: "Verify Email",
+        html: `<h2>Your Brat verification code is:</h2><h1>${otp}</h1>`
     });
 }

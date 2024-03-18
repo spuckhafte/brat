@@ -10,6 +10,7 @@ import passwordValidtor from "src/helpers/passwordValidator";
 import { socket } from "src/helpers/socket";
 import useSocket from "src/helpers/hooks/useSocket";
 import { DataOnEntry, UserForSignup } from "server/types";
+import { parseAllTakes } from "src/helpers/takeParser";
 
 const MIN_USERNAME_LEN = 6;
 const MAX_USERNAME_LEN = 64;
@@ -98,7 +99,7 @@ export default () => {
                 clg: data.clg,
                 sessionId: data.sessionId,
             });
-            setTakes(data.takes);
+            setTakes(parseAllTakes(data.takes));
             setLoggedIn(true);
         },
 

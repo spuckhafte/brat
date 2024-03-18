@@ -11,6 +11,7 @@ import useSocket from "src/helpers/hooks/useSocket";
 import { DataOnEntry } from "server/types";
 import EmailValidator from "email-validator";
 import passwordValidtor from "src/helpers/passwordValidator";
+import { parseAllTakes } from "src/helpers/takeParser";
 
 export default () => {
     const setEntryMode = useSetAtom(entryModeAtom);
@@ -62,7 +63,7 @@ export default () => {
                 clg: data.clg,
                 sessionId: data.sessionId
             });
-            setTakes(data.takes);
+            setTakes(parseAllTakes(data.takes));
             setLoggedIn(true);
         },
 
@@ -95,7 +96,7 @@ export default () => {
                 clg: data.clg,
                 sessionId: data.sessionId
             });
-            setTakes(data.takes);
+            setTakes(parseAllTakes(data.takes));
             setLoggedIn(true);
         }
     });

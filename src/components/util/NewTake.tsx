@@ -4,9 +4,25 @@ import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 
 import css from "src/helpers/css"
 import Button from "./Button"
 import { faComment } from "@fortawesome/free-regular-svg-icons"
-import { useSetAtom } from "jotai"
-import { modalValueAtom, modalVisibleAtom } from "src/helpers/atoms"
+import { useAtom, useAtomValue, useSetAtom } from "jotai"
+import { modalValueAtom, modalVisibleAtom, takesAtom, userDetailsAtom } from "src/helpers/atoms"
 import { useState } from "react"
+import { socket } from "src/helpers/socket"
+
+type NewTakeToPost = {
+    author: string,
+    clgId: string,
+    content: {
+        title: string,
+        body: string,
+    },
+    likes: number,
+    dislikes: number,
+    likedBy: string[],
+    dislikedBy: string[],
+
+    createdAt: string,
+}
 
 export default () => {
     const setModalVisible = useSetAtom(modalVisibleAtom);
@@ -14,11 +30,37 @@ export default () => {
 
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
+    const userDetails = useAtomValue(userDetailsAtom);
 
     function handleCancelNewTake() {
         setModalVisible(false);
         setModalValue({ body: "" });
     }
+
+    function postNewTake() {
+        if (!userDetails?.sessionId) return;
+        if (!title && !body) return;
+
+        const newTake: NewTakeToPost = {
+            author: userDetails?.user.name as string,
+            clgId: userDetails?.clg.id as string,
+            content: {
+                title, 
+                body,
+            },
+            likes: 0,
+            dislikes: 0,
+            likedBy: [],
+            dislikedBy: [],
+            createdAt: Date.now().toString(),
+        }
+
+        socket.emit("postNewTake", newTake, userDetails.sessionId);
+        
+        // close modal
+        handleCancelNewTake();
+    }
+
 
     return <View style={style.newTakeContainer}>
 
@@ -57,14 +99,18 @@ export default () => {
 
         <View style={ style.newTakeBottom }>
             <Button 
-                styling={style.newTakePostBtn}
+                styling={{ 
+                    ...style.newTakePostBtn, 
+                    backgroundColor: title && body ? css.colors.lightSecondary : "gray",  
+                }}
                 text={
                     <>
-                        <FontAwesomeIcon icon={faComment} color="white"/>
-                        <Text style={{ color: "white" }}> Post</Text>
+                        <FontAwesomeIcon icon={faComment} size={18} color="white"/>
+                        <Text style={{ color: "white", fontSize: 18, fontWeight: "500" }}> Post</Text>
                     </>
                 }
                 noText={true}
+                onPressOut={postNewTake}
             />
         </View>
     </View>
@@ -124,8 +170,9 @@ const style = StyleSheet.create({
         flexDirection: "row",
         width: "auto",
         alignSelf: "flex-end",
-        paddingHorizontal: 10,
+        paddingHorizontal: 15,
         backgroundColor: css.colors.secondary,
+        
         gap: 3,
     },
 });

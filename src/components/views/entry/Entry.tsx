@@ -10,6 +10,7 @@ import { socket } from "src/helpers/socket";
 import useSocket from "src/helpers/hooks/useSocket";
 import { DataOnEntry } from "server/types";
 import { loggedInAtom, takesAtom, userDetailsAtom } from "src/helpers/atoms";
+import { parseAllTakes } from "src/helpers/takeParser";
 
 export default () => {
     const [entryMode, setEntryMode] = useAtom(entryModeAtom);
@@ -45,7 +46,7 @@ export default () => {
                 clg: data.clg,
                 sessionId: data.sessionId
             });
-            setTakes(data.takes);
+            setTakes(parseAllTakes(data.takes));
             setLoggedIn(true);
         }
     });
